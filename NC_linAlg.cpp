@@ -4,8 +4,8 @@
 #include <ctime>
 using namespace std;
 //se declaran las funciones
-double matrix_product(double matrix1, double matrix2, int filas1, int columnas1, int filas2, int columnas2);
-double get_matrix();
+double** matrix_product(double** matrix1, double** matrix2, int filas1, int columnas1, int filas2, int columnas2);
+double** get_matrix(int filas,int columnas);
 //se crea la funcion main
 int main (){
   //se crean las vairables filas
@@ -31,17 +31,41 @@ int main (){
   cin>>columnas2;
   cout<<"las dimensiones de su matriz2 son "<< filas2 <<" "<<columnas2<<endl;
   //llama al metodo get_matrix
-  double** matrix1= get_matrix(int filas1,int columnas1);
-  double** matrix2= get_matrix(int filas2,int columnas2);
+  double** matrix1= get_matrix(filas1,columnas1);
+  double** matrix2= get_matrix(filas2,columnas2);
   //imprime las matrices
-  cout<<"la matriz1 es: "<<matrix1<<endl;
-  cout<<"la matriz2 es: "<<matrix2<<endl;
+  cout<<"la matriz1 es: "<<endl;
+
+  for(int i=0;i<filas1;i++){
+    for(int j=0;j<columnas1;j++){
+        cout<<matrix1[i][j]<<" ";
+    }
+    cout<<endl;
+  }
+
+  cout<<"la matriz2 es: "<<endl;
+
+
+  for(int i=0;i<filas2;i++){
+    for(int j=0;j<columnas2;j++){
+        cout<<matrix2[i][j]<<" ";
+    }
+    cout<<endl;
+  }
   //imprime el producto de matrix1 y matrix2 y llama al metodo de matrix_product
-  double** matrix_product=matrix_product(double matrix1, double matrix2, int filas1, int columnas1, int filas2, int columnas2);
-  cout<<"el producto de matriz1 y matriz2 es: "<<matrix_product<<endl;
+  double** resultado = matrix_product(matrix1,  matrix2,  filas1,  columnas1, filas2, columnas2);
+  cout<<"el producto de matriz1 y matriz2 es: "<<endl;
+
+
+  for(int i=0;i<filas1;i++){
+    for(int j=0;j<columnas2;j++){
+        cout<<resultado[i][j]<<" ";
+    }
+    cout<<endl;
+  }
 }
 //metodos
-double matrix_product(double matrix1, double matrix2, int filas1, int columnas1, int filas2, int columnas2){
+double** matrix_product(double** matrix1, double** matrix2, int filas1, int columnas1, int filas2, int columnas2){
   //crea la matriz resultado
   //crea una matriz de vectores como un puntero. Parametro:numero de filas
   double** resultado = new double*[filas1];
@@ -53,7 +77,7 @@ double matrix_product(double matrix1, double matrix2, int filas1, int columnas1,
   if(columnas1!=filas2){
     //retorna mensaje de error
     cout<<"no se pueden multiplicar las matrices, las dimensiones no son validas"<<endl;
-    return 1;
+
   }
   //si las dimensiones son correctas hace la multiplicacion
   else{
@@ -64,13 +88,16 @@ double matrix_product(double matrix1, double matrix2, int filas1, int columnas1,
           temp+=matrix1[i][k]*matrix2[k][j];
 
         }
+        // cout<<temp;
         resultado[i][j]=temp;
         temp=0;
       }
     }
   }
+  return resultado;
+  
 }
-double get_matrix(int filas,int columnas){
+double** get_matrix(int filas,int columnas){
   //crea una matriz de vectores como un puntero. Parametro:numero de filas
   double** matrix = new double*[filas];
   //ciclo que llena la matriz con vectores vacios
